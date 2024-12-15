@@ -45,7 +45,7 @@ posts = [
     },
 ]
 
-posts_id = {post['id']: post for post in posts}
+POSTS = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -56,11 +56,11 @@ def index(request):
 
 def post_detail(request, post_id):
     template = 'blog/detail.html'
-    try:
-        context = {'post': posts_id[post_id]}
-    except KeyError:
+    if post_id in range(3):
+        context = {'post': POSTS[post_id]}
+        return render(request, template, context)
+    else:
         raise Http404("Post not found")
-    return render(request, template, context)
 
 
 def category_posts(request, category_slug):
