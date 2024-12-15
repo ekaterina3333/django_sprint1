@@ -1,6 +1,6 @@
+from django.http import Http404
 from django.shortcuts import render
 
-# Create your views here.
 
 posts = [
     {
@@ -45,6 +45,8 @@ posts = [
     },
 ]
 
+posts_id = {post['id']: post for post in posts}
+
 
 def index(request):
     template_name = 'blog/index.html'
@@ -52,9 +54,12 @@ def index(request):
     return render(request, template_name, context)
 
 
-def post_detail(request, id):
+def post_detail(request, post_id):
     template = 'blog/detail.html'
-    context = {'post': posts[id]}
+    try:
+        context = {'post': posts_id[post_id]}
+    except KeyError:
+        raise Http404("Post not found")
     return render(request, template, context)
 
 
