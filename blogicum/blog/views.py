@@ -56,11 +56,10 @@ def index(request):
 
 def post_detail(request, post_id):
     template = 'blog/detail.html'
-    if post_id in range(3):
-        context = {'post': POSTS[post_id]}
-        return render(request, template, context)
-    else:
+    if post_id not in POSTS:
         raise Http404("Post not found")
+    context = {'post': POSTS[post_id]}
+    return render(request, template, context)
 
 
 def category_posts(request, category_slug):
